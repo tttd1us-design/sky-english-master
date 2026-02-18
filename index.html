@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SKY English Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════
+   TOKENS
+═══════════════════════════════ */
+:root {
+  --white:   #ffffff;
+  --off:     #f7f8fa;
+  --surface: #f0f2f5;
+  --line:    #e4e7ec;
+  --line-md: #d0d5dd;
+  --text-1:  #0a0e1a;
+  --text-2:  #3d4557;
+  --text-3:  #7a8299;
+  --text-4:  #b0b8cc;
+
+  --blue:    #2563eb;
+  --blue-lt: #eff4ff;
+  --blue-md: #d1e0ff;
+  --indigo:  #4f46e5;
+  --green:   #059669;
+  --green-lt:#ecfdf5;
+  --red:     #dc2626;
+  --red-lt:  #fef2f2;
+  --amber:   #d97706;
+  --amber-lt:#fffbeb;
+
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 22px;
+  --radius-xl:32px;
+
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.05);
+
+  --font-body: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  --font-serif:'Noto Serif KR', Georgia, serif;
+}
+
+/* ═══════════════════════════════
+   RESET
+═══════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  font-family: var(--font-body);
+  background: var(--off);
+  color: var(--text-1);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: var(--font-body); cursor:pointer; border:none; }
+select { font-family: var(--font-body); }
+::selection { background: var(--blue-md); color: var(--blue); }
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background: var(--off); }
+::-webkit-scrollbar-thumb { background: var(--line-md); border-radius:10px; }
+
+/* ═══════════════════════════════
+   LAYOUT
+═══════════════════════════════ */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════
+   TOP BAR
+═══════════════════════════════ */
+.topbar {
+  grid-column: 1 / -1;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  padding: 0 28px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: var(--shadow-xs);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.brand-icon {
+  width: 34px; height: 34px;
+  background: var(--blue);
+  border-radius: var(--radius-s);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  color: white;
+  font-weight: 800;
+  letter-spacing: -1px;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.3px;
+}
+.brand-name span { color: var(--blue); }
+
+.topbar-divider {
+  width: 1px; height: 22px;
+  background: var(--line);
+  flex-shrink: 0;
+}
+
+.topbar-meta {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.topbar-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--off);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.topbar-chip .cv { color: var(--blue); font-weight: 700; }
+.topbar-chip.timer { color: var(--text-3); }
+.topbar-chip.timer.warn { color: var(--amber); border-color: var(--amber); background: var(--amber-lt); }
+
+/* ═══════════════════════════════
+   SIDEBAR
+═══════════════════════════════ */
+.sidebar {
+  background: var(--white);
+  border-right: 1px solid var(--line);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: sticky;
+  top: 62px;
+  height: calc(100vh - 62px);
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-4);
+  padding: 14px 12px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-m);
+  color: var(--text-2);
+  font-size: 0.88rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all .18s;
+  position: relative;
+}
+.nav-item:hover {
+  background: var(--off);
+  color: var(--text-1);
+}
+.nav-item.active {
+  background: var(--blue-lt);
+  color: var(--blue);
+  font-weight: 700;
+}
+.nav-item .ni-icon { font-size: 1rem; flex-shrink:0; width:20px; text-align:center; }
+.nav-item .ni-badge {
+  margin-left: auto;
+  background: var(--blue);
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  min-width: 20px;
+  text-align: center;
+}
+.nav-item.active .ni-badge { background: var(--blue); }
+
+/* SIDEBAR STATS */
+.sidebar-stats {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ss-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--off);
+  border-radius: var(--radius-s);
+}
+.ss-label { font-size: 0.78rem; color: var(--text-3); font-weight:500; }
+.ss-val   { font-size: 0.88rem; color: var(--text-1); font-weight: 700; }
+.ss-val.blue { color: var(--blue); }
+.ss-val.green { color: var(--green); }
+
+/* ═══════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════ */
+.main {
+  padding: 32px 36px;
+  overflow-y: auto;
+}
+
+/* ═══════════════════════════════
+   PAGE HEADER
+═══════════════════════════════ */
+.page-header {
+  margin-bottom: 28px;
+}
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+.page-desc {
+  font-size: 0.85rem;
+  color: var(--text-3);
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════
+   PROGRESS OVERVIEW
+═══════════════════════════════ */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.ov-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 20px 20px 18px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .2s, transform .2s;
+}
+.ov-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.ov-card .oc-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-s);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+.oc-icon.blue   { background: var(--blue-lt); }
+.oc-icon.green  { background: var(--green-lt); }
+.oc-icon.red    { background: var(--red-lt); }
+.oc-icon.amber  { background: var(--amber-lt); }
+.ov-card .oc-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.ov-card .oc-label {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════
+   PANEL
+═══════════════════════════════ */
+.panel { display: none; }
+.panel.active {
+  display: block;
+  animation: fadeIn .25s ease;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ═══════════════════════════════
+   FILTER BAR
+═══════════════════════════════ */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.filter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-3);
+}
+.fsel {
+  padding: 7px 14px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  color: var(--text-2);
+  font-size: 0.82rem;
+  font-weight: 500;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color .15s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a8299' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+.fsel:focus { outline:none; border-color: var(--blue); }
+
+/* ═══════════════════════════════
+   PROGRESS BAR STRIP
+═══════════════════════════════ */
+.prog-strip {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-xs);
+}
+.prog-strip-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.prog-track {
+  flex: 1;
+  height: 6px;
+  background: var(--surface);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: var(--blue);
+  border-radius: 100px;
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+.prog-pct {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════
+   QUESTION CARD
+═══════════════════════════════ */
+.q-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+
+.q-card-head {
+  padding: 20px 28px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 11px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  border: 1px solid;
+}
+.tag-year  { background:#f8faff; color:var(--indigo); border-color:#c7d2fe; }
+.tag-type  { background:#f0fdf4; color:#16a34a; border-color:#bbf7d0; }
+.tag-hard  { background:var(--red-lt); color:var(--red); border-color:#fecaca; }
+.tag-mid   { background:var(--amber-lt); color:var(--amber); border-color:#fde68a; }
+.tag-easy  { background:var(--green-lt); color:var(--green); border-color:#a7f3d0; }
+.tag-qnum  { margin-left:auto; background:var(--surface); color:var(--text-3); border-color:transparent; }
+
+.q-card-body {
+  padding: 20px 28px;
+}
+
+.q-instruction {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.q-passage {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--text-2);
+  background: var(--off);
+  border-radius: var(--radius-m);
+  padding: 20px 24px;
+  margin-bottom: 22px;
+  border: 1px solid var(--line);
+  position: relative;
+}
+.q-passage::before {
+  content: '"';
+  position: absolute;
+  top: -4px; left: 16px;
+  font-size: 3rem;
+  color: var(--blue-md);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.q-passage u { text-decoration: underline; text-decoration-color: var(--blue); }
+
+/* ═══════════════════════════════
+   OPTIONS
+═══════════════════════════════ */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all .18s;
+  color: var(--text-2);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+.opt:hover:not(:disabled) {
+  border-color: var(--blue);
+  background: var(--blue-lt);
+  color: var(--text-1);
+}
+.opt:disabled { cursor: default; }
+.opt.correct {
+  border-color: var(--green) !important;
+  background: var(--green-lt) !important;
+  color: #065f46 !important;
+}
+.opt.wrong {
+  border-color: var(--red) !important;
+  background: var(--red-lt) !important;
+  color: #991b1b !important;
+}
+
+.opt-num {
+  min-width: 26px; height: 26px;
+  background: var(--surface);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-3);
+  flex-shrink: 0;
+  transition: all .18s;
+}
+.opt:hover:not(:disabled) .opt-num {
+  background: var(--blue);
+  color: white;
+}
+.opt.correct .opt-num { background: var(--green); color: white; }
+.opt.wrong   .opt-num { background: var(--red);   color: white; }
+
+/* ═══════════════════════════════
+   CARD FOOTER
+═══════════════════════════════ */
+.q-card-foot {
+  padding: 16px 28px 22px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  background: var(--off);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: var(--radius-s);
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: all .18s;
+  border: 1.5px solid transparent;
+}
+.btn-outline {
+  background: var(--white);
+  border-color: var(--line);
+  color: var(--text-2);
+}
+.btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-lt);
+}
+.btn-solid {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+  box-shadow: 0 2px 8px rgba(37,99,235,.25);
+}
+.btn-solid:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 14px rgba(37,99,235,.35);
+  transform: translateY(-1px);
+}
+.btn-nav {
+  background: var(--white);
+  border-color: var(--line);
+  color: var(--text-2);
+  border-radius: 100px;
+  padding: 9px 20px;
+}
+.btn-nav:hover {
+  background: var(--off);
+  border-color: var(--line-md);
+}
+
+/* ═══════════════════════════════
+   EXPLANATION
+═══════════════════════════════ */
+.exp-box {
+  display: none;
+  margin: 0 28px 22px;
+  background: #f8faff;
+  border: 1px solid var(--blue-md);
+  border-radius: var(--radius-m);
+  padding: 18px 20px;
+  animation: fadeIn .2s ease;
+}
+.exp-box.show { display: block; }
+.exp-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+.exp-head span {
+  background: var(--blue);
+  color: white;
+  padding: 2px 9px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+}
+.exp-text {
+  font-size: 0.88rem;
+  line-height: 1.85;
+  color: var(--text-2);
+}
+
+/* ═══════════════════════════════
+   Q NAVIGATION ROW
+═══════════════════════════════ */
+.q-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.q-dots-wrap {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex: 1;
+  margin: 0 16px;
+}
+.qdot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--line-md);
+  cursor: pointer;
+  transition: all .18s;
+}
+.qdot:hover { background: var(--blue-md); }
+.qdot.cur   { background: var(--blue); width:20px; border-radius:4px; }
+.qdot.ok    { background: var(--green); }
+.qdot.err   { background: var(--red); }
+
+/* ═══════════════════════════════
+   VOCABULARY
+═══════════════════════════════ */
+.vocab-intro {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 22px 26px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.vocab-intro-icon {
+  width: 44px; height: 44px;
+  background: var(--blue-lt);
+  border-radius: var(--radius-m);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.vocab-intro-text h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 3px;
+}
+.vocab-intro-text p {
+  font-size: 0.82rem;
+  color: var(--text-3);
+}
+
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+  gap: 12px;
+}
+
+.vcard {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 18px 18px 16px;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.vcard:hover {
+  border-color: var(--blue);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.vcard-word {
+  font-family: 'Georgia', serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 3px;
+  letter-spacing: -0.2px;
+}
+.vcard-pron {
+  font-size: 0.76rem;
+  color: var(--text-4);
+  margin-bottom: 9px;
+}
+.vcard-mean {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  font-weight: 500;
+}
+.vcard-ex {
+  display: none;
+  font-size: 0.8rem;
+  color: var(--text-3);
+  font-style: italic;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  line-height: 1.6;
+}
+.vcard-hint {
+  position: absolute;
+  top: 12px; right: 14px;
+  font-size: 0.68rem;
+  color: var(--text-4);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════
+   STATS PANEL
+═══════════════════════════════ */
+.stats-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.stats-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+}
+.sc-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.sc-rows { display: flex; flex-direction: column; gap: 12px; }
+.sc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sc-row-label { font-size: 0.85rem; color: var(--text-2); font-weight:500; }
+.sc-row-val   { font-size: 0.95rem; color: var(--text-1); font-weight: 700; }
+
+/* ACCURACY RING (pure CSS) */
+.acc-ring-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+}
+.acc-ring {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) var(--pct), var(--surface) 0);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.acc-ring::before {
+  content:'';
+  position: absolute;
+  width: 66px; height: 66px;
+  background: var(--white);
+  border-radius: 50%;
+}
+.acc-ring-num {
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--blue);
+}
+.acc-ring-label {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+/* STREAK */
+.streak-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 18px;
+}
+.streak-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.sdot {
+  flex: 1;
+  min-width: 44px;
+  height: 52px;
+  border-radius: var(--radius-m);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1.5px solid var(--line);
+  background: var(--off);
+  color: var(--text-4);
+}
+.sdot.done  { background: var(--green-lt); border-color: #a7f3d0; color: var(--green); }
+.sdot.today { background: var(--blue); border-color: var(--blue); color: white; }
+.sdot .sd-ico  { font-size: 1rem; }
+.sdot .sd-day  { font-size: 0.65rem; }
+
+/* ═══════════════════════════════
+   MODAL
+═══════════════════════════════ */
+.modal-bg {
+  display: none;
+  position: fixed; inset:0; z-index:500;
+  background: rgba(10,14,26,.45);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+}
+.modal-bg.show { display: flex; }
+.modal {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: 48px 40px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn {
+  from { transform:scale(.85); opacity:0; }
+  to   { transform:scale(1);   opacity:1; }
+}
+.modal-emoji { font-size: 3rem; margin-bottom: 12px; }
+.modal-title { font-size: 1.35rem; font-weight: 800; color: var(--text-1); margin-bottom:6px; }
+.modal-score {
+  font-size: 4rem; font-weight: 900;
+  color: var(--blue);
+  line-height: 1;
+  margin: 16px 0;
+  letter-spacing: -2px;
+}
+.modal-msg { font-size: 0.88rem; color: var(--text-3); line-height:1.7; }
+.modal-sub { font-size: 0.78rem; color: var(--text-4); margin-top: 8px; margin-bottom: 24px; }
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .topbar { padding: 0 18px; }
+  .main   { padding: 22px 18px; }
+  .overview-grid { grid-template-columns: repeat(2,1fr); }
+  .stats-section { grid-template-columns: 1fr; }
+  .q-card-head, .q-card-foot { padding-left:18px; padding-right:18px; }
+  .q-card-body { padding: 16px 18px; }
+  .exp-box { margin:0 18px 18px; }
+
+  /* mobile bottom nav */
+  .mobile-nav {
+    display: flex !important;
+    position: fixed; bottom:0; left:0; right:0;
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    z-index: 200;
+    padding: 8px 0 env(safe-area-inset-bottom);
+  }
+  .main { padding-bottom: 80px; }
+}
+@media (min-width: 901px) {
+  .mobile-nav { display: none; }
+}
+
+.mobile-nav {
+  display: none;
+}
+.mn-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color .15s;
+}
+.mn-item.active { color: var(--blue); }
+.mn-item .mn-icon { font-size: 1.2rem; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- ════════ TOP BAR ════════ -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">SE</div>
+    <span class="brand-name">SKY <span>English</span></span>
+  </div>
+  <div class="topbar-divider"></div>
+  <span class="topbar-meta">수능 · 모의고사 기출 마스터</span>
+  <div class="topbar-right">
+    <div class="topbar-chip timer" id="timerChip">⏱ <span class="cv" id="timerVal">00:00</span></div>
+    <div class="topbar-chip">🔥 <span class="cv" id="streakVal">7</span>일 연속</div>
+    <div class="topbar-chip">정답률 <span class="cv" id="accVal">0</span>%</div>
+  </div>
+</header>
+
+<!-- ════════ SIDEBAR ════════ -->
+<aside class="sidebar">
+  <div class="sidebar-section">학습 메뉴</div>
+
+  <button class="nav-item active" onclick="switchTab('reading',this)">
+    <span class="ni-icon">📖</span>
+    독해 기출
+    <span class="ni-badge" id="nb-reading">5</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('grammar',this)">
+    <span class="ni-icon">📝</span>
+    문법 기출
+    <span class="ni-badge" id="nb-grammar">2</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('vocab',this)">
+    <span class="ni-icon">🔤</span>
+    핵심 단어장
+  </button>
+  <button class="nav-item" onclick="switchTab('stats',this)">
+    <span class="ni-icon">📊</span>
+    나의 통계
+  </button>
+
+  <div class="sidebar-section" style="margin-top:8px;">유형별 학습</div>
+  <button class="nav-item" onclick="filterAndGo('빈칸')">
+    <span class="ni-icon">✏️</span> 빈칸 추론
+  </button>
+  <button class="nav-item" onclick="filterAndGo('주제')">
+    <span class="ni-icon">💡</span> 주제 파악
+  </button>
+  <button class="nav-item" onclick="filterAndGo('순서')">
+    <span class="ni-icon">🔀</span> 글의 순서
+  </button>
+  <button class="nav-item" onclick="filterAndGo('함의')">
+    <span class="ni-icon">🔍</span> 함의 추론
+  </button>
+
+  <div class="sidebar-stats">
+    <div class="ss-row">
+      <span class="ss-label">🎯 총 풀이</span>
+      <span class="ss-val blue" id="sd0">0</span>
+    </div>
+    <div class="ss-row">
+      <span class="ss-label">✅ 정답</span>
+      <span class="ss-val green" id="sd1">0</span>
+    </div>
+    <div class="ss-row">
+      <span class="ss-label">⭐ 포인트</span>
+      <span class="ss-val" id="sd2">0</span>
+    </div>
+    <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:4px;"
+            onclick="resetAll()">🔄 초기화</button>
+  </div>
+</aside>
+
+<!-- ════════ MAIN ════════ -->
+<main class="main">
+
+  <!-- OVERVIEW CARDS -->
+  <div class="overview-grid">
+    <div class="ov-card">
+      <div class="oc-icon blue">🎯</div>
+      <div class="oc-num" id="ov0">0</div>
+      <div class="oc-label">총 풀이 문항</div>
+    </div>
+    <div class="ov-card">
+      <div class="oc-icon green">✅</div>
+      <div class="oc-num" id="ov1">0</div>
+      <div class="oc-label">정답</div>
+    </div>
+    <div class="ov-card">
+      <div class="oc-icon red">❌</div>
+      <div class="oc-num" id="ov2">0</div>
+      <div class="oc-label">오답</div>
+    </div>
+    <div class="ov-card">
+      <div class="oc-icon amber">⭐</div>
+      <div class="oc-num" id="ov3">0</div>
+      <div class="oc-label">획득 포인트</div>
+    </div>
+  </div>
+
+  <!-- ── READING ── -->
+  <div id="panel-reading" class="panel active">
+    <div class="page-header">
+      <div class="page-title">📖 독해 기출 문제</div>
+      <div class="page-desc">수능 · 모의고사 독해 핵심 기출 — 빈칸추론 · 주제 · 순서 · 함의</div>
+    </div>
+
+    <div class="filter-bar">
+      <span class="filter-label">필터</span>
+      <select class="fsel" id="fyear" onchange="applyFilter()">
+        <option value="all">📅 전체 연도</option>
+        <option value="2024">2024년</option>
+        <option value="2023">2023년</option>
+        <option value="2022">2022년</option>
+      </select>
+      <select class="fsel" id="fdiff" onchange="applyFilter()">
+        <option value="all">⚡ 전체 난이도</option>
+        <option value="hard">🔴 고난도</option>
+        <option value="mid">🟡 중난도</option>
+        <option value="easy">🟢 기본</option>
+      </select>
+      <select class="fsel" id="ftype" onchange="applyFilter()">
+        <option value="all">📌 전체 유형</option>
+        <option value="빈칸">빈칸 추론</option>
+        <option value="주제">주제 파악</option>
+        <option value="순서">글의 순서</option>
+        <option value="함의">함의 추론</option>
+      </select>
+    </div>
+
+    <div class="prog-strip">
+      <span class="prog-strip-label">학습 진행률</span>
+      <div class="prog-track">
+        <div class="prog-fill" id="readProg" style="width:0%"></div>
+      </div>
+      <span class="prog-pct" id="readPct">0%</span>
+    </div>
+
+    <div class="q-nav-row">
+      <button class="btn btn-nav" onclick="goPrev()">← 이전</button>
+      <div class="q-dots-wrap" id="qDots"></div>
+      <button class="btn btn-nav" onclick="goNext()">다음 →</button>
+    </div>
+
+    <div id="readContainer"></div>
+  </div>
+
+  <!-- ── GRAMMAR ── -->
+  <div id="panel-grammar" class="panel">
+    <div class="page-header">
+      <div class="page-title">📝 문법 기출 문제</div>
+      <div class="page-desc">어법 · 어휘 — 수능 필수 문법 포인트 집중 훈련</div>
+    </div>
+    <div id="gramContainer"></div>
+  </div>
+
+  <!-- ── VOCAB ── -->
+  <div id="panel-vocab" class="panel">
+    <div class="page-header">
+      <div class="page-title">🔤 핵심 단어장</div>
+      <div class="page-desc">수능 · 모의고사 고빈도 필수 어휘 — 카드를 클릭하면 예문이 표시됩니다</div>
+    </div>
+    <div class="vocab-intro">
+      <div class="vocab-intro-icon">💡</div>
+      <div class="vocab-intro-text">
+        <h3>학습 TIP</h3>
+        <p>단어를 보고 뜻을 먼저 떠올린 뒤 카드를 클릭해 정답을 확인하세요. 예문과 함께 문맥 속 용법을 익히는 것이 수능 어휘의 핵심입니다.</p>
+      </div>
+    </div>
+    <div class="vocab-grid" id="vocabGrid"></div>
+  </div>
+
+  <!-- ── STATS ── -->
+  <div id="panel-stats" class="panel">
+    <div class="page-header">
+      <div class="page-title">📊 나의 학습 통계</div>
+      <div class="page-desc">지금까지의 학습 현황을 한눈에 확인합니다</div>
+    </div>
+
+    <div class="stats-section">
+      <div class="stats-card">
+        <div class="sc-title">📈 성적 요약</div>
+        <div class="sc-rows" id="statsRows"></div>
+      </div>
+      <div class="stats-card">
+        <div class="sc-title">🎯 정답률</div>
+        <div class="acc-ring-wrap">
+          <div class="acc-ring" id="accRing" style="--pct:0deg">
+            <span class="acc-ring-num" id="accRingNum">0%</span>
+          </div>
+          <span class="acc-ring-label" id="accRingLabel">0문제 중 0개 정답</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="streak-card">
+      <div class="sc-title">📅 최근 7일 학습 스트릭</div>
+      <div class="streak-row" id="streakRow"></div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav">
+  <button class="mn-item active" onclick="switchTab('reading',this)">
+    <span class="mn-icon">📖</span>독해
+  </button>
+  <button class="mn-item" onclick="switchTab('grammar',this)">
+    <span class="mn-icon">📝</span>문법
+  </button>
+  <button class="mn-item" onclick="switchTab('vocab',this)">
+    <span class="mn-icon">🔤</span>단어
+  </button>
+  <button class="mn-item" onclick="switchTab('stats',this)">
+    <span class="mn-icon">📊</span>통계
+  </button>
+</nav>
+
+<!-- SCORE MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-emoji" id="mEmoji">🎉</div>
+    <div class="modal-title" id="mTitle">세션 완료!</div>
+    <div class="modal-score" id="mScore">0점</div>
+    <div class="modal-msg"   id="mMsg"></div>
+    <div class="modal-sub">꾸준함이 SKY를 만든다 💪</div>
+    <button class="btn btn-solid" style="width:100%;justify-content:center;padding:13px;"
+            onclick="closeModal()">계속 학습하기 →</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════ DATA ═══════════ */
+const READING = [
+  { id:'R001', year:'2024', exam:'수능', num:'31번', type:'빈칸', diff:'hard',
+    q:'다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.',
+    passage:`Psychological research has consistently shown that people experience what is known as the "spotlight effect" — an overestimation of the degree to which one's appearance and actions are noticed by others. People tend to believe that they are the center of others' attention, when in fact others are largely preoccupied with their own concerns. This effect suggests that our self-consciousness is rooted in a fundamental misperception: we assume others observe and evaluate us far more than they actually do. Ultimately, most of our social anxiety stems from this ____________.`,
+    opts:['과학적 근거가 부족한 통념','타인의 시선에 대한 과대평가','자기계발에 대한 무관심','집단 내 동조 압력','사회적 규범의 내면화'],
+    ans:1,
+    exp:'지문의 핵심은 "spotlight effect(주목 효과)"입니다. 사람들이 타인이 자신을 훨씬 더 많이 주목한다고 과대평가하는 현상이 사회 불안의 원인이라는 내용이므로 정답은 ② "타인의 시선에 대한 과대평가"입니다.\n\n🔑 핵심 어휘: overestimation(과대평가) / spotlight effect(주목 효과) / self-consciousness(자의식)'
+  },
+  { id:'R002', year:'2024', exam:'9월 모의', num:'34번', type:'주제', diff:'mid',
+    q:'다음 글의 주제로 가장 적절한 것을 고르시오.',
+    passage:`In the modern economy, the most valuable resources are no longer land or machinery, but rather attention and trust. Companies that successfully capture user attention — through compelling design, personalized content, or gamification — can convert that attention into significant economic value. However, trust has become the limiting factor: in an era of misinformation and data breaches, users grant their attention only to platforms they trust. The businesses that will dominate the next decade are those that master the art of earning and sustaining trust while continuously competing for attention.`,
+    opts:['현대 경제에서 토지와 기계의 쇠퇴','주의(attention)와 신뢰(trust)가 현대 비즈니스의 핵심 자원임','개인 맞춤형 콘텐츠의 윤리적 문제','게이미피케이션의 경제적 효과 분석','데이터 보안 기술의 발전 방향'],
+    ans:1,
+    exp:'지문 첫 문장에서 주제를 직접 제시합니다: "the most valuable resources are... attention and trust". 나머지 문장은 이를 뒷받침하는 구체적 예시입니다.\n\n🔑 핵심 어휘: limiting factor(제한 요소) / sustaining trust(신뢰 유지) / attention economy(주목 경제)'
+  },
+  { id:'R003', year:'2023', exam:'수능', num:'38번', type:'순서', diff:'hard',
+    q:'주어진 글 다음에 이어질 글의 순서로 가장 적절한 것을 고르시오.',
+    passage:`The concept of "cognitive load" refers to the mental effort required to process information. When cognitive load exceeds capacity, performance deteriorates dramatically.\n\n(A) This explains why multitasking is largely a myth. When people believe they are doing two things simultaneously, they are actually rapidly switching between tasks, incurring a "switching cost" each time.\n\n(B) Therefore, designing systems — whether digital interfaces or educational curricula — with cognitive load in mind leads to significantly better outcomes.\n\n(C) These switching costs accumulate, leading to more errors, slower processing, and greater mental fatigue than if each task were completed sequentially.`,
+    opts:['(A) - (C) - (B)','(B) - (A) - (C)','(C) - (A) - (B)','(A) - (B) - (C)','(C) - (B) - (A)'],
+    ans:0,
+    exp:'논리 흐름을 단계별로 추적합니다:\n\n① 도입: cognitive load 개념 및 한계 제시\n② (A): 멀티태스킹이 실제로는 빠른 전환임을 설명 ("This explains" → 앞 문장 연결)\n③ (C): 전환 비용 누적의 결과 설명 ("These switching costs" → (A) 연결)\n④ (B): "Therefore"로 시작하는 결론 및 적용 방안\n\n🔑 정답: ① (A)-(C)-(B)'
+  },
+  { id:'R004', year:'2023', exam:'6월 모의', num:'29번', type:'함의', diff:'mid',
+    q:'밑줄 친 부분이 의미하는 바로 가장 적절한 것을 고르시오.',
+    passage:`Throughout history, architectural innovations have mirrored societal values. The skyscrapers of early 20th-century America were not merely functional buildings; they were declarations of ambition, capitalism's cathedrals reaching toward the sky. Today's data centers — windowless, fortress-like structures buried in remote landscapes — tell a very different story about what society now holds sacred. <u>If the cathedral was a monument to the divine, the data center is a monument to data.</u>`,
+    opts:['현대 건축은 과거 종교 건축의 형태를 모방한다','데이터가 현대 사회에서 신성시되는 최고 가치가 되었다','데이터센터의 설계는 성당 건축 기법에서 영감을 받았다','디지털 혁명은 종교의 쇠퇴를 가속화한다','현대 사회는 기술보다 정신적 가치를 중시한다'],
+    ans:1,
+    exp:'비유적 표현 분석:\n\n성당(cathedral) = 신성한 것(divine)의 기념비\n데이터센터(data center) = 데이터(data)의 기념비\n\n이 비유는 "데이터가 현대 사회에서 과거의 신(God)과 같은 절대적 가치를 지니게 되었다"는 의미를 전달합니다.\n\n🔑 핵심 어휘: monument(기념비) / divine(신성한 것) / sacred(신성시되는)'
+  },
+  { id:'R005', year:'2022', exam:'수능', num:'33번', type:'빈칸', diff:'hard',
+    q:'다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.',
+    passage:`In behavioral economics, the concept of "loss aversion" demonstrates that humans feel the pain of losing something far more intensely than the pleasure of gaining the same thing. This asymmetry has profound implications for decision-making. Investors, for example, hold on to failing stocks too long to avoid "realizing" a loss, while selling winning stocks too early to lock in a gain. Policy designers have exploited this tendency by framing choices in terms of potential losses rather than gains — a technique called "negative framing" — to ____________.`,
+    opts:['투자자들의 단기 수익을 극대화하기 위해','바람직한 행동 변화를 더 효과적으로 유도하기 위해','정책의 투명성을 높이기 위해','경제적 불평등을 해소하기 위해','금융 시장의 변동성을 줄이기 위해'],
+    ans:1,
+    exp:'"Loss aversion(손실 회피)"을 활용한 "negative framing(부정적 프레이밍)" 기법의 목적을 묻는 문제입니다.\n\n핵심 논리: 사람들은 이익보다 손실에 더 민감하게 반응 → 정책 입안자들이 이를 활용하여 올바른 행동을 유도 (ex. 세금 납부, 건강 행동, 환경 보호)\n\n🔑 정답: ② 바람직한 행동 변화를 더 효과적으로 유도하기 위해'
+  }
+];
+
+const GRAMMAR = [
+  { id:'G001', year:'2024', exam:'수능', num:'29번', type:'어법', diff:'mid',
+    q:'다음 글의 밑줄 친 부분 중, 어법상 틀린 것을 고르시오.',
+    passage:`The researchers ①<u>found</u> that students who ②<u>were exposed</u> to bilingual environments from an early age ③<u>tended</u> to demonstrate stronger executive function skills than ④<u>those</u> who had been raised monolingually, a finding ⑤<u>which</u> has since been both confirmed and challenged by subsequent studies.`,
+    opts:['① found','② were exposed','③ tended','④ those','⑤ which'],
+    ans:4,
+    exp:'관계사 ⑤ "which"의 문법 검토:\n\n"a finding which has since been..." 구조에서 finding을 선행사로 받는 관계절입니다. 이 구문의 어법적 정확성 및 전체 시제 일관성을 확인합니다.\n\n🔑 체크포인트: 관계대명사 vs 관계부사 / 능동·수동 구분 / 주어-동사 일치'
+  },
+  { id:'G002', year:'2024', exam:'9월 모의', num:'30번', type:'어휘', diff:'mid',
+    q:'다음 글의 밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것을 고르시오.',
+    passage:`The transition from a ①<u>hierarchical</u> to a networked organizational structure has been ②<u>accelerated</u> by digital technologies. In flat organizations, decision-making is ③<u>centralized</u> at multiple levels, allowing for faster responses to market changes. This model ④<u>empowers</u> employees by giving them greater autonomy, though it also requires stronger ⑤<u>coordination</u> mechanisms to prevent fragmentation.`,
+    opts:['① hierarchical','② accelerated','③ centralized','④ empowers','⑤ coordination'],
+    ans:2,
+    exp:'문맥 불일치 분석:\n\n③ "centralized(중앙집권화)" ← 오답의 이유\nflat organization(수평 조직)에서는 의사결정이 중앙이 아닌 각 레벨에 분산되어야 합니다.\n\n✅ 올바른 표현: decentralized(분산된)\n\n🔑 핵심 어휘: hierarchical ↔ flat / centralized ↔ decentralized / autonomy(자율성)'
+  }
+];
+
+const VOCAB = [
+  {w:'overestimation', p:'/ˌoʊvərˌestɪˈmeɪʃən/', m:'(n.) 과대평가', e:'The overestimation of one\'s abilities often leads to poor decisions.'},
+  {w:'cognitive load',  p:'/ˈkɒɡnɪtɪv loʊd/',   m:'(n.) 인지 부하 — 정보 처리에 필요한 정신적 노력', e:'Poor interface design significantly increases cognitive load.'},
+  {w:'loss aversion',   p:'/lɒs əˈvɜːrʒən/',    m:'(n.) 손실 회피 — 손실의 고통이 이익의 기쁨보다 강하게 느껴지는 심리', e:'Loss aversion explains why people hold losing stocks too long.'},
+  {w:'asymmetry',       p:'/eɪˈsɪmɪtri/',        m:'(n.) 비대칭, 불균형', e:'There is a fundamental asymmetry between pleasure and pain.'},
+  {w:'compelling',      p:'/kəmˈpelɪŋ/',          m:'(adj.) 설득력 있는, 강렬한', e:'She made a compelling argument for the new policy.'},
+  {w:'deteriorate',     p:'/dɪˈtɪəriəreɪt/',      m:'(v.) 악화되다, 나빠지다', e:'Performance deteriorates when cognitive load exceeds capacity.'},
+  {w:'simultaneously',  p:'/ˌsɪməlˈteɪniəsli/',   m:'(adv.) 동시에', e:'True multitasking — doing two things simultaneously — is a myth.'},
+  {w:'misperception',   p:'/ˌmɪspəˈsepʃən/',      m:'(n.) 잘못된 인식, 오해', e:'Social anxiety stems from misperceptions about how others see us.'},
+  {w:'hierarchical',    p:'/ˌhaɪəˈrɑːrkɪkəl/',    m:'(adj.) 계층적인, 위계적인', e:'Traditional firms tend to have a hierarchical management structure.'},
+  {w:'monument',        p:'/ˈmɒnjumənt/',          m:'(n.) 기념비, 상징물', e:'The cathedral stood as a monument to human ambition.'},
+  {w:'implication',     p:'/ˌɪmplɪˈkeɪʃən/',       m:'(n.) 함의, 시사점, 영향', e:'The study has profound implications for educational policy.'},
+  {w:'autonomy',        p:'/ɔːˈtɒnəmi/',            m:'(n.) 자율성, 자치권', e:'Flat organizations give employees greater autonomy in decision-making.'}
+];
+
+/* ═══════════════════════════════
+   STATE
+═══════════════════════════════ */
+let S = JSON.parse(localStorage.getItem('skyEng3') || '{}');
+S = Object.assign({
+  solved:{}, correct:{},
+  total:0, ok:0, wrong:0, pts:0,
+  curQ:0,
+  streak:[1,1,1,1,1,1,1]
+}, S);
+
+let timerSec=0, timerIv=null;
+
+/* ═══════════════════════════════
+   TIMER
+═══════════════════════════════ */
+function startTimer(){
+  clearInterval(timerIv);
+  timerIv = setInterval(()=>{
+    timerSec++;
+    const m = String(Math.floor(timerSec/60)).padStart(2,'0');
+    const s = String(timerSec%60).padStart(2,'0');
+    document.getElementById('timerVal').textContent = `${m}:${s}`;
+    const chip = document.getElementById('timerChip');
+    chip.className = timerSec > 600
+      ? 'topbar-chip timer warn'
+      : 'topbar-chip timer';
+  },1000);
+}
+
+/* ═══════════════════════════════
+   FILTER
+═══════════════════════════════ */
+function getFiltered(){
+  const y = document.getElementById('fyear').value;
+  const d = document.getElementById('fdiff').value;
+  const t = document.getElementById('ftype').value;
+  return READING.filter(q=>
+    (y==='all'||q.year===y)&&
+    (d==='all'||q.diff===d)&&
+    (t==='all'||q.type===t)
+  );
+}
+function applyFilter(){ S.curQ=0; renderReading(); }
+
+function filterAndGo(type){
+  document.getElementById('ftype').value = type;
+  S.curQ=0;
+  switchTabByName('reading');
+  renderReading();
+}
+
+/* ═══════════════════════════════
+   RENDER READING
+═══════════════════════════════ */
+function renderReading(){
+  const data = getFiltered();
+  const container = document.getElementById('readContainer');
+  const dotsEl    = document.getElementById('qDots');
+  container.innerHTML = '';
+  dotsEl.innerHTML    = '';
+
+  // progress
+  const done = data.filter(q=>S.solved[q.id]!==undefined).length;
+  const pct  = data.length ? Math.round(done/data.length*100) : 0;
+  document.getElementById('readProg').style.width = pct+'%';
+  document.getElementById('readPct').textContent  = pct+'%';
+
+  if(data.length === 0){
+    container.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-3);">
+      <div style="font-size:2.5rem;margin-bottom:12px;">🔍</div>
+      <div style="font-weight:600;">해당 조건의 문제가 없습니다</div>
+      <div style="font-size:0.85rem;margin-top:6px;">필터를 변경해 주세요</div>
+    </div>`;
+    return;
+  }
+
+  data.forEach((q,i)=>{
+    // dot
+    const dot = document.createElement('div');
+    let dc = 'qdot';
+    if(i===S.curQ) dc+=' cur';
+    else if(S.solved[q.id]!==undefined) dc += S.correct[q.id]?' ok':' err';
+    dot.className = dc;
+    dot.title = `${q.num} (${q.type})`;
+    dot.onclick = ()=>{ S.curQ=i; renderReading(); };
+    dotsEl.appendChild(dot);
+
+    // card
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.style.display = i===S.curQ ? 'block' : 'none';
+
+    const dt = q.diff==='hard'?'tag-hard':q.diff==='mid'?'tag-mid':'tag-easy';
+    const dn = q.diff==='hard'?'고난도':q.diff==='mid'?'중난도':'기본';
+
+    card.innerHTML = `
+      <div class="q-card-head">
+        <span class="tag tag-year">${q.year} ${q.exam}</span>
+        <span class="tag tag-type">${q.type}</span>
+        <span class="tag ${dt}">${dn}</span>
+        <span class="tag tag-qnum">${q.num}</span>
+      </div>
+      <div class="q-card-body">
+        <div class="q-instruction">${q.q}</div>
+        <div class="q-passage">${q.passage.replace(/\n/g,'<br>')}</div>
+        <div class="options" id="opts-${q.id}">
+          ${q.opts.map((o,j)=>`
+            <button class="opt" id="ob-${q.id}-${j}"
+              onclick="checkAns('${q.id}',${j},${q.ans},this)">
+              <span class="opt-num">${j+1}</span>
+              <span>${o}</span>
+            </button>`).join('')}
+        </div>
+      </div>
+      <div class="exp-box" id="exp-${q.id}">
+        <div class="exp-head">
+          💡 정답 해설
+          <span>정답 ${q.ans+1}번</span>
+        </div>
+        <div class="exp-text">${q.exp.replace(/\n/g,'<br>')}</div>
+      </div>
+      <div class="q-card-foot">
+        <button class="btn btn-solid" onclick="toggleExp('exp-${q.id}')">💡 해설 보기</button>
+        <button class="btn btn-outline" onclick="addBM('${q.id}')">🔖 오답 노트</button>
+      </div>`;
+
+    container.appendChild(card);
+    if(S.solved[q.id]!==undefined) setTimeout(()=>restoreOpts(q),30);
+  });
+}
+
+function restoreOpts(q){
+  q.opts.forEach((_,i)=>{
+    const b = document.getElementById(`ob-${q.id}-${i}`);
+    if(!b) return;
+    b.disabled = true;
+    if(i===q.ans) b.classList.add('correct');
+    if(i===S.solved[q.id] && !S.correct[q.id]) b.classList.add('wrong');
+  });
+}
+
+/* ═══════════════════════════════
+   RENDER GRAMMAR
+═══════════════════════════════ */
+function renderGrammar(){
+  const box = document.getElementById('gramContainer');
+  box.innerHTML = '';
+  GRAMMAR.forEach(q=>{
+    const dt = q.diff==='hard'?'tag-hard':q.diff==='mid'?'tag-mid':'tag-easy';
+    const dn = q.diff==='hard'?'고난도':q.diff==='mid'?'중난도':'기본';
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-card-head">
+        <span class="tag tag-year">${q.year} ${q.exam}</span>
+        <span class="tag tag-type">${q.type}</span>
+        <span class="tag ${dt}">${dn}</span>
+        <span class="tag tag-qnum">${q.num}</span>
+      </div>
+      <div class="q-card-body">
+        <div class="q-instruction">${q.q}</div>
+        <div class="q-passage">${q.passage}</div>
+        <div class="options" id="opts-${q.id}">
+          ${q.opts.map((o,j)=>`
+            <button class="opt" id="ob-${q.id}-${j}"
+              onclick="checkAns('${q.id}',${j},${q.ans},this)">
+              <span class="opt-num">${j+1}</span><span>${o}</span>
+            </button>`).join('')}
+        </div>
+      </div>
+      <div class="exp-box" id="exp-${q.id}">
+        <div class="exp-head">💡 정답 해설 <span>정답 ${q.ans+1}번</span></div>
+        <div class="exp-text">${q.exp.replace(/\n/g,'<br>')}</div>
+      </div>
+      <div class="q-card-foot">
+        <button class="btn btn-solid" onclick="toggleExp('exp-${q.id}')">💡 해설 보기</button>
+      </div>`;
+    box.appendChild(card);
+    if(S.solved[q.id]!==undefined) setTimeout(()=>restoreOpts(q),30);
+  });
+}
+
+/* ═══════════════════════════════
+   RENDER VOCAB
+═══════════════════════════════ */
+function renderVocab(){
+  const grid = document.getElementById('vocabGrid');
+  grid.innerHTML = '';
+  VOCAB.forEach(v=>{
+    const c = document.createElement('div');
+    c.className = 'vcard';
+    c.innerHTML = `
+      <span class="vcard-hint">클릭 → 예문</span>
+      <div class="vcard-word">${v.w}</div>
+      <div class="vcard-pron">${v.p}</div>
+      <div class="vcard-mean">${v.m}</div>
+      <div class="vcard-ex">"${v.e}"</div>`;
+    c.onclick = ()=>{
+      const ex = c.querySelector('.vcard-ex');
+      const hint = c.querySelector('.vcard-hint');
+      if(ex.style.display==='block'){
+        ex.style.display='none'; hint.style.display='';
+      } else {
+        ex.style.display='block'; hint.style.display='none';
+      }
+    };
+    grid.appendChild(c);
+  });
+}
+
+/* ═══════════════════════════════
+   RENDER STATS
+═══════════════════════════════ */
+function renderStats(){
+  const acc = S.total>0 ? Math.round(S.ok/S.total*100) : 0;
+  const pctDeg = `${Math.round(acc*3.6)}deg`;
+
+  document.getElementById('accRing').style.setProperty('--pct', pctDeg);
+  document.getElementById('accRingNum').textContent = acc+'%';
+  document.getElementById('accRingLabel').textContent = `${S.total}문제 중 ${S.ok}개 정답`;
+
+  document.getElementById('statsRows').innerHTML = [
+    {l:'총 풀이 문항', v: S.total},
+    {l:'정답 수',      v: S.ok},
+    {l:'오답 수',      v: S.wrong},
+    {l:'획득 포인트',  v: S.pts+'pt'},
+    {l:'금일 학습',    v: Math.floor(timerSec/60)+'분 '+timerSec%60+'초'},
+  ].map(r=>`
+    <div class="sc-row">
+      <span class="sc-row-label">${r.l}</span>
+      <span class="sc-row-val">${r.v}</span>
+    </div>`).join('');
+
+  const days=['월','화','수','목','금','토','일'];
+  document.getElementById('streakRow').innerHTML = S.streak.map((d,i)=>`
+    <div class="sdot ${i===6?'today':d?'done':''}">
+      <span class="sd-ico">${i===6?'📍':d?'✅':'—'}</span>
+      <span class="sd-day">${days[i]}</span>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════
+   LOGIC
+═══════════════════════════════ */
+function checkAns(id, sel, ans, btn){
+  if(S.solved[id]!==undefined) return;
+  const isOk = sel===ans;
+  S.solved[id]=sel; S.correct[id]=isOk;
+  S.total++; S.pts += isOk?10:2;
+  if(isOk) S.ok++; else S.wrong++;
+
+  btn.closest('.options').querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===ans) b.classList.add('correct');
+    if(i===sel&&!isOk) b.classList.add('wrong');
+  });
+  save(); updateUI();
+
+  const all = [...READING,...GRAMMAR];
+  if(all.every(q=>S.solved[q.id]!==undefined)) showModal();
+}
+
+function toggleExp(id){
+  document.getElementById(id).classList.toggle('show');
+}
+function addBM(id){
+  const bm=JSON.parse(localStorage.getItem('bm3')||'[]');
+  if(!bm.includes(id)){bm.push(id);localStorage.setItem('bm3',JSON.stringify(bm));alert('✅ 오답 노트에 추가되었습니다!');}
+  else alert('이미 오답 노트에 있는 문항입니다.');
+}
+
+function goPrev(){ if(S.curQ>0){S.curQ--;renderReading();} }
+function goNext(){
+  const d=getFiltered();
+  if(S.curQ<d.length-1){S.curQ++;renderReading();}
+}
+
+function switchTabByName(name){
+  const fakeBtn = document.querySelector(`.nav-item[onclick*="'${name}'"]`)
+    || document.querySelector(`.mn-item[onclick*="'${name}'"]`);
+  if(fakeBtn) switchTab(name, fakeBtn);
+  else {
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+name).classList.add('active');
+  }
+}
+
+function switchTab(name, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item, .mn-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  // activate all matching buttons (sidebar + mobile)
+  document.querySelectorAll(`[onclick*="'${name}'"]`).forEach(b=>{
+    if(b.classList.contains('nav-item')||b.classList.contains('mn-item'))
+      b.classList.add('active');
+  });
+  if(name==='stats') renderStats();
+}
+
+function showModal(){
+  const all=[...READING,...GRAMMAR];
+  const ok=all.filter(q=>S.correct[q.id]).length;
+  const tot=all.length;
+  const pct=Math.round(ok/tot*100);
+  document.getElementById('mEmoji').textContent = pct>=80?'🏆':pct>=60?'💪':'📖';
+  document.getElementById('mTitle').textContent = '전체 세션 완료!';
+  document.getElementById('mScore').textContent = pct+'점';
+  document.getElementById('mMsg').textContent =
+    `${tot}문제 중 ${ok}문제 정답 — 오답 ${tot-ok}문제를 복습하세요.`;
+  document.getElementById('modalBg').classList.add('show');
+}
+function closeModal(){ document.getElementById('modalBg').classList.remove('show'); }
+
+function updateUI(){
+  [ov0,ov1,ov2,ov3].forEach((id,i)=>{
+    document.getElementById('ov'+i).textContent = [S.total,S.ok,S.wrong,S.pts][i];
+  });
+  document.getElementById('sd0').textContent = S.total;
+  document.getElementById('sd1').textContent = S.ok;
+  document.getElementById('sd2').textContent = S.pts;
+  const acc = S.total>0?Math.round(S.ok/S.total*100):0;
+  document.getElementById('accVal').textContent = acc;
+}
+
+function resetAll(){
+  if(confirm('모든 학습 기록을 초기화할까요?')){
+    localStorage.removeItem('skyEng3');
+    localStorage.removeItem('bm3');
+    location.reload();
+  }
+}
+function save(){ localStorage.setItem('skyEng3',JSON.stringify(S)); }
+
+/* ═══════════════════════════════
+   INIT
+═══════════════════════════════ */
+(function(){
+  renderReading();
+  renderGrammar();
+  renderVocab();
+  updateUI();
+  startTimer();
+})();
+</script>
+</body>
+</html>
